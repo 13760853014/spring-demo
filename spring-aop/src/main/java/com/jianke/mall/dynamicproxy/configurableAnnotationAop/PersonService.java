@@ -1,0 +1,11 @@
+package com.jianke.mall.dynamicproxy.configurableAnnotationAop;
+
+public interface PersonService {
+	
+	public String savePerson();
+	
+	public void updatePerson();
+	
+	public void deletePerson();
+	
+}

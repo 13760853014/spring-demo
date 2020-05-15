@@ -9,8 +9,18 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>spring-ioc</module>
+        <module>spring-aop</module>
+        <module>spring-boot</module>
+        <module>spring-multi-datasource</module>
+        <module>design-pattern</module>
     </modules>
     <packaging>pom</packaging>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.1.RELEASE</version>
+    </parent>
 
     <dependencies>
         <dependency>
@@ -25,6 +35,15 @@
         </dependency>
     </dependencies>
 
+<!--    <dependencyManagement>-->
+<!--        <dependencies>-->
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-starter-parent</artifactId>-->
+<!--                <version>2.0.7.RELEASE</version>-->
+<!--            </dependency>-->
+<!--        </dependencies>-->
+<!--    </dependencyManagement>-->
 
    <build>
        <plugins>

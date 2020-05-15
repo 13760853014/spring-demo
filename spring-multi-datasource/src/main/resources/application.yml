@@ -1,0 +1,25 @@
+spring:
+  profiles: default
+  application :
+    name: mall-share-service
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
+
+
+  datasource:
+    db1:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://172.24.30.6:3306/common_evaluate?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+      username: root
+      password: jianke@test123
+    db2:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://172.17.250.112:3306/common_evaluate?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+      username: develop
+      password: jianke@123
+
+mall:
+  settlement:
+    postageDelivery:
+      2: app
