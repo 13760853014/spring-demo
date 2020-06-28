@@ -76,4 +76,9 @@ public class RedisLockAspect {
         }
         return parser.parseExpression(key).getValue(context);
     }
+
+    public static void main(String[] args) {
+
+        
+    }
 }
