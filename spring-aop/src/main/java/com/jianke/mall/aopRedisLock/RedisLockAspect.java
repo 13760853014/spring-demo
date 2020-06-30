@@ -1,5 +1,8 @@
 package com.jianke.mall.aopRedisLock;
 
+import com.jianke.mall.aopTransaction.AfterCommitAnnotationAspect;
+import com.jianke.mall.aopTransaction.AfterCommitExecutor;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -7,6 +10,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.ExpressionParser;
@@ -18,12 +22,29 @@ import java.lang.reflect.Method;
 
 @Service
 @Aspect
+@Slf4j
 public class RedisLockAspect {
+
+    private final AfterCommitExecutor afterCommitExecutor;
+
+    @Autowired
+    public RedisLockAspect(AfterCommitExecutor afterCommitExecutor) {
+        this.afterCommitExecutor = afterCommitExecutor;
+    }
 
     private LocalVariableTableParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
 
     @Before("@annotation(com.jianke.mall.aopRedisLock.RedisLock)")
     public void lock(JoinPoint jp) throws Exception{
+        afterCommitExecutor.execute(() -> {
+            try {
+                log.info("start run PjpAfterCommitRunnable run... ");
+            } catch (Throwable e) {
+                log.error("Exception while invoking pjp.proceed()", e);
+                throw new RuntimeException(e);
+            }
+        });
+
         Object[] args = jp.getArgs();
         String[] parameterNames = discoverer.getParameterNames(((MethodSignature) jp.getSignature()).getMethod());
 
@@ -35,7 +56,7 @@ public class RedisLockAspect {
         if (parameterNames != null) {
             key = getRequest(lock.key(), parameterNames, args);
         }
-        System.out.println("lockKey= " + key.toString());
+        log.info("lockKey= " + key.toString());
     }
 
     private Method getMethod(JoinPoint jp) throws NoSuchMethodException {
